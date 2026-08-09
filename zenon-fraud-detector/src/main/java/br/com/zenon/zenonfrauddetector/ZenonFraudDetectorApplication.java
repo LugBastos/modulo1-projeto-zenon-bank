@@ -33,8 +33,8 @@ public class ZenonFraudDetectorApplication {
                 0
         );
 
-        System.out.println(transaction1.toString());
-        System.out.println(transaction2.toString());
+        System.out.println(transaction1);
+        System.out.println(transaction2);
 
     }
 
