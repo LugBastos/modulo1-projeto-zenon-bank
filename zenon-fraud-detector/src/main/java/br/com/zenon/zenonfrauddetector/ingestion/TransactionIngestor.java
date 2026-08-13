@@ -1,6 +1,8 @@
-package br.com.zenon.zenonfrauddetector.dto.read;
+package br.com.zenon.zenonfrauddetector.ingestion;
 
-import br.com.zenon.zenonfrauddetector.Transaction;
+import br.com.zenon.zenonfrauddetector.domain.Transaction;
+
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,16 +13,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Component
 public class TransactionIngestor {
 
-    public List<Transaction> transactionList(String file) {
+    public List<ParseResult> transactionList(String file) {
         Path path = Paths.get("data", file);
 
         try (Stream<String> lines = Files.lines(path)) {
             return lines
                     .skip(1)
-                    .limit(1000)
-                    .map(Transaction::fromCsv)
+                    .limit(50000)
+                    .map(line -> {
+                        try {
+                            return (ParseResult) new ParseResult.Success(Transaction.fromCsv(line));
+                        } catch (Exception e) {
+                            return new ParseResult.Failure(line, e.toString());
+                        }
+                    })
                     .collect(Collectors.toList());
         } catch (IOException e) {
             System.out.println(e.getMessage());
