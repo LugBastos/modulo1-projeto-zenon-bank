@@ -61,25 +61,25 @@ public class ZenonFraudDetectorApplication implements CommandLineRunner {
 //
 //        fraudsByTransactionType.forEach((type, count) -> log.info(" - {}: {}", type, count));
 
-        List<Transaction> transactions = transactionIngestor.transactions(file);
-        log.info("Transações carregadas: {}", transactions.size());
-
-        TransactionRepository listRepository = new TransactionListRepository(transactions);
-
-        log.info("6.1 Busca na List:");
-        search(listRepository, "C12345");
-        search(listRepository, "C1231006815");
-
-        String worstCase = transactions.getLast().origin().name();
-
-        log.info("6.2 Pior caso (última transação da lista): {}", worstCase);
-        long listTime = measure(listRepository, worstCase, "List");
-
-        TransactionRepository mapRepository = new TransactionMapRepository(transactions);
-        long mapTime = measure(mapRepository, worstCase, "Map");
-
-        log.info("6.3 Map foi {}x mais rápido que a List no pior caso",
-                mapTime == 0 ? "∞" : listTime / mapTime);
+//        List<Transaction> transactions = transactionIngestor.transactions(file);
+//        log.info("Transações carregadas: {}", transactions.size());
+//
+//        TransactionRepository listRepository = new TransactionListRepository(transactions);
+//
+//        log.info("6.1 Busca na List:");
+//        search(listRepository, "C12345");
+//        search(listRepository, "C1231006815");
+//
+//        String worstCase = transactions.getLast().origin().name();
+//
+//        log.info("6.2 Pior caso (última transação da lista): {}", worstCase);
+//        long listTime = measure(listRepository, worstCase, "List");
+//
+//        TransactionRepository mapRepository = new TransactionMapRepository(transactions);
+//        long mapTime = measure(mapRepository, worstCase, "Map");
+//
+//        log.info("6.3 Map foi {}x mais rápido que a List no pior caso",
+//                mapTime == 0 ? "∞" : listTime / mapTime);
     }
 
     private void search(TransactionRepository repository, String client) {
