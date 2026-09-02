@@ -16,13 +16,15 @@ import java.util.stream.Stream;
 @Component
 public class TransactionIngestor {
 
+    private static final int TRANSACTION_LIMIT = 100_000;
+
     public List<ParseResult> transactionList(String file) {
         Path path = Paths.get("data", file);
 
         try (Stream<String> lines = Files.lines(path)) {
             return lines
                     .skip(1)
-                    .limit(50000)
+                    .limit(TRANSACTION_LIMIT)
                     .map(line -> {
                         try {
                             return (ParseResult) new ParseResult.Success(Transaction.fromCsv(line));
@@ -35,5 +37,12 @@ public class TransactionIngestor {
             System.out.println(e.getMessage());
             return Collections.emptyList();
         }
+    }
+
+    public List<Transaction> transactions(String file) {
+        return transactionList(file).stream()
+                .filter(ParseResult.Success.class::isInstance)
+                .map(result -> ((ParseResult.Success) result).transaction())
+                .toList();
     }
 }
