@@ -1,6 +1,7 @@
 package br.com.zenon.zenonfrauddetector;
 
 import br.com.zenon.zenonfrauddetector.ingestion.TransactionReport;
+import br.com.zenon.zenonfrauddetector.ingestion.TransactionReportResult;
 
 /**
  * Executa o {@link TransactionReport} sobre o arquivo PaySim original (~493MB).
@@ -14,7 +15,7 @@ public class ReportMain {
 
     public static void main(String[] args) {
         TransactionReport report = new TransactionReport();
-        TransactionReport.Result result = report.generate(PAYSIM_FILE);
+        TransactionReportResult result = report.generate(PAYSIM_FILE);
 
         System.out.println("Total de linhas: " + result.totalLines());
         System.out.println("Total de fraudes: " + result.totalFrauds());
